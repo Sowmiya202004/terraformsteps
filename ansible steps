@@ -1,0 +1,94 @@
+To use **Ansible with Amazon Web Services and store files in an Amazon S3 bucket, you can create the bucket and upload files using an Ansible playbook.
+
+
+---
+
+1. Install Required Packages
+
+Install Ansible and AWS libraries:
+
+sudo apt update
+sudo apt install ansible -y
+pip install boto boto3
+
+Install AWS Ansible collection:
+
+ansible-galaxy collection install amazon.aws
+
+
+---
+
+2. Configure AWS Credentials
+
+Run:
+
+aws configure
+
+Enter your credentials:
+
+AWS Access Key ID: XXXXX
+AWS Secret Access Key: XXXXX
+Default region: us-east-1
+Output format: json
+
+
+---
+
+3. Ansible Playbook to Create S3 Bucket and Upload File
+
+Create a file called s3_bucket.yml
+
+---
+- name: Create S3 bucket and upload file
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+    - name: Create S3 bucket
+      amazon.aws.s3_bucket:
+        name: my-ansible-storage-bucket-2026
+        state: present
+        region: us-east-1
+
+    - name: Upload file to S3 bucket
+      amazon.aws.aws_s3:
+        bucket: my-ansible-storage-bucket-2026
+        object: sample.txt
+        src: /home/ubuntu/sample.txt
+        mode: put
+
+
+---
+
+4. Run the Playbook
+
+Execute:
+
+ansible-playbook s3_bucket.yml
+
+
+---
+
+5. Result
+
+After running the playbook:
+
+A new S3 bucket will be created in AWS.
+
+The file sample.txt will be uploaded into the bucket.
+
+
+So Ansible automates AWS storage management by creating an S3 bucket and storing files inside it automatically.
+
+
+---
+
+✅ If you want, I can also show you:
+
+AWS + Ansible architecture diagram (for exam/project)
+
+Short 5-mark answer for “Using Ansible to create S3 bucket in AWS”
+
+Terraform vs Ansible AWS example.
