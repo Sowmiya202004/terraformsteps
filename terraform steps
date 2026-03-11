@@ -1,0 +1,401 @@
+Below is a very detailed step-by-step guide to create storage (Amazon S3) in AWS using Terraform. I will include every small step so you can follow it easily. 🚀
+
+
+---
+
+Creating Storage in AWS (S3) Using Terraform – Step by Step
+
+1. Create an AWS Account
+
+1. Go to Amazon Web Services website
+https://aws.amazon.com
+
+
+2. Click Create an AWS Account.
+
+
+3. Enter:
+
+Email address
+
+Password
+
+AWS account name
+
+
+
+4. Enter billing information (card details).
+
+
+5. Complete phone verification.
+
+
+6. Choose Basic Support (Free).
+
+
+7. Your AWS account will be created.
+
+
+
+
+---
+
+2. Login to AWS Console
+
+1. Go to https://aws.amazon.com/console/
+
+
+2. Click Sign in to the Console.
+
+
+3. Enter:
+
+Email
+
+Password
+
+
+
+4. You will enter the AWS Management Console.
+
+
+
+
+---
+
+3. Create IAM User (Best Practice)
+
+Terraform should not use root account.
+
+1. In AWS console search IAM.
+
+
+2. Open IAM Dashboard.
+
+
+3. Click Users → Create user.
+
+
+
+Enter:
+
+User name: terraform-user
+
+Check:
+
+✔ Provide user access to AWS Management Console
+
+Click Next.
+
+
+---
+
+4. Attach Permissions
+
+1. Choose Attach policies directly.
+
+
+2. Select:
+
+
+
+AdministratorAccess
+
+3. Click Next → Create User.
+
+
+
+
+---
+
+5. Create Access Keys
+
+Terraform needs Access Key and Secret Key.
+
+1. Open the created user terraform-user.
+
+
+2. Click Security credentials.
+
+
+3. Scroll to Access keys.
+
+
+4. Click Create access key.
+
+
+
+Choose:
+
+Command Line Interface (CLI)
+
+Click Next → Create Access Key.
+
+You will get:
+
+Access Key ID
+Secret Access Key
+
+Download the .csv file or copy them.
+
+⚠ Keep them safe.
+
+
+---
+
+6. Install Terraform
+
+Go to **HashiCorp Terraform website:
+
+https://developer.hashicorp.com/terraform/downloads
+
+Steps:
+
+1. Download Terraform for Windows.
+
+
+2. Extract the zip file.
+
+
+3. Copy terraform.exe.
+
+
+
+Now paste it in:
+
+C:\Windows\System32
+
+This makes Terraform accessible everywhere.
+
+
+---
+
+7. Verify Terraform Installation
+
+Open Command Prompt.
+
+Type:
+
+terraform -version
+
+Example output:
+
+Terraform v1.8.x
+
+Terraform is installed successfully.
+
+
+---
+
+8. Install AWS CLI
+
+Download from:
+
+https://aws.amazon.com/cli/
+
+Install the AWS CLI v2.
+
+After installation check:
+
+aws --version
+
+
+---
+
+9. Configure AWS Credentials
+
+Run this command:
+
+aws configure
+
+Enter:
+
+AWS Access Key ID: *******
+AWS Secret Access Key: ********
+Default region name: us-east-1
+Default output format: json
+
+Now Terraform can connect to AWS.
+
+
+---
+
+10. Create Terraform Project Folder
+
+Create a new folder.
+
+Example:
+
+terraform-s3-project
+
+Open the folder.
+
+
+---
+
+11. Create Terraform File
+
+Create a file:
+
+main.tf
+
+Open it in VS Code or Notepad.
+
+
+---
+
+12. Add Terraform Configuration
+
+Paste this code:
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_s3_bucket" "mybucket" {
+  bucket = "my-terraform-storage-bucket-12345"
+
+  tags = {
+    Name        = "TerraformBucket"
+    Environment = "Dev"
+  }
+}
+
+⚠ Bucket name must be globally unique.
+
+Example:
+
+my-terraform-bucket-2026-123
+
+
+---
+
+13. Initialize Terraform
+
+Open terminal inside the folder.
+
+Run:
+
+terraform init
+
+Terraform downloads AWS provider.
+
+You will see:
+
+Terraform has been successfully initialized
+
+
+---
+
+14. Check Terraform Plan
+
+Run:
+
+terraform plan
+
+Terraform will show what it will create.
+
+Example:
+
++ aws_s3_bucket.mybucket
+
+Meaning it will create an S3 bucket.
+
+
+---
+
+15. Apply Terraform Configuration
+
+Run:
+
+terraform apply
+
+You will see:
+
+Do you want to perform these actions?
+
+Type:
+
+yes
+
+Press Enter.
+
+Terraform creates the S3 bucket.
+
+
+---
+
+16. Verify in AWS
+
+1. Open AWS Console.
+
+
+2. Search S3.
+
+
+3. Click S3.
+
+
+
+You will see the bucket:
+
+my-terraform-storage-bucket-12345
+
+Storage created successfully. 🎉
+
+
+---
+
+17. Upload File (Optional)
+
+Open bucket.
+
+Click:
+
+Upload → Add files → Upload
+
+Now your storage works.
+
+
+---
+
+18. Destroy Resources (Optional)
+
+If you want to delete bucket using Terraform:
+
+terraform destroy
+
+Type:
+
+yes
+
+Terraform will remove the bucket.
+
+
+---
+
+Final Architecture
+
+Terraform
+     │
+     ▼
+AWS Provider
+     │
+     ▼
+Amazon S3 Bucket
+     │
+     ▼
+Storage Created
+
+
+---
+
+✅ If you want, I can also explain:
+
+Creating EC2 using Terraform (step-by-step)
+
+Creating VPC + S3 using Terraform
+
+Terraform project architecture for lab/practical
+
+Viva questions for "AWS Terraform Storage".
