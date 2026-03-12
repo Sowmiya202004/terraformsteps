@@ -1,94 +1,116 @@
-To use **Ansible with Amazon Web Services and store files in an Amazon S3 bucket, you can create the bucket and upload files using an Ansible playbook.
+Since this is a DevOps practical exam, you usually need to demonstrate a small DevOps pipeline or infrastructure setup. One common practical is using Ansible with Amazon Web Services to create infrastructure such as Amazon EC2 and Amazon S3.
+
+Below is a simple practical exam procedure you can write or perform.
 
 
 ---
 
-1. Install Required Packages
+DevOps Practical: Create Infrastructure Using Ansible in AWS
 
-Install Ansible and AWS libraries:
+Step 1: Install Ansible
+
+On the control machine:
 
 sudo apt update
 sudo apt install ansible -y
-pip install boto boto3
 
-Install AWS Ansible collection:
+Check version:
+
+ansible --version
+
+
+---
+
+Step 2: Install AWS Collection for Ansible
 
 ansible-galaxy collection install amazon.aws
 
+Install required libraries:
 
----
+pip install boto boto3
 
-2. Configure AWS Credentials
-
-Run:
-
-aws configure
-
-Enter your credentials:
-
-AWS Access Key ID: XXXXX
-AWS Secret Access Key: XXXXX
-Default region: us-east-1
-Output format: json
+These libraries allow Ansible to interact with AWS services.
 
 
 ---
 
-3. Ansible Playbook to Create S3 Bucket and Upload File
+Step 3: Configure AWS Credentials
 
-Create a file called s3_bucket.yml
+Create credentials file:
+
+mkdir ~/.aws
+nano ~/.aws/credentials
+
+Add:
+
+[default]
+aws_access_key_id=YOUR_ACCESS_KEY
+aws_secret_access_key=YOUR_SECRET_KEY
+
 
 ---
-- name: Create S3 bucket and upload file
+
+Step 4: Create Ansible Playbook
+
+Create file:
+
+nano aws_infra.yml
+
+Playbook code:
+
+- name: Create AWS Infrastructure
   hosts: localhost
   connection: local
   gather_facts: no
 
   tasks:
 
-    - name: Create S3 bucket
-      amazon.aws.s3_bucket:
-        name: my-ansible-storage-bucket-2026
-        state: present
-        region: us-east-1
+  - name: Create EC2 Instance
+    amazon.aws.ec2_instance:
+      name: devops-instance
+      instance_type: t2.micro
+      image_id: ami-0abcdef1234567890
+      region: ap-south-1
+      wait: yes
+      count: 1
 
-    - name: Upload file to S3 bucket
-      amazon.aws.aws_s3:
-        bucket: my-ansible-storage-bucket-2026
-        object: sample.txt
-        src: /home/ubuntu/sample.txt
-        mode: put
-
-
----
-
-4. Run the Playbook
-
-Execute:
-
-ansible-playbook s3_bucket.yml
+  - name: Create S3 Bucket
+    amazon.aws.s3_bucket:
+      name: devops-storage-bucket-demo
+      state: present
+      region: ap-south-1
 
 
 ---
 
-5. Result
+Step 5: Run the Playbook
 
-After running the playbook:
-
-A new S3 bucket will be created in AWS.
-
-The file sample.txt will be uploaded into the bucket.
-
-
-So Ansible automates AWS storage management by creating an S3 bucket and storing files inside it automatically.
+ansible-playbook aws_infra.yml
 
 
 ---
 
-✅ If you want, I can also show you:
+Output
 
-AWS + Ansible architecture diagram (for exam/project)
+The playbook will create:
 
-Short 5-mark answer for “Using Ansible to create S3 bucket in AWS”
+Resource	Service
 
-Terraform vs Ansible AWS example.
+Virtual Machine	Amazon EC2
+Storage Bucket	Amazon S3
+
+in Amazon Web Services.
+---
+Result
+
+Infrastructure is automatically created using Ansible automation, which demonstrates the DevOps concept of Infrastructure as Code (IaC).
+
+---
+
+✅ Short Conclusion for Practical Record
+
+DevOps automation was implemented using Ansible to create AWS infrastructure. The playbook successfully provisioned an EC2 instance and an S3 bucket, demonstrating Infrastructure as Code and automated cloud resource management.
+
+---
+
+If you want, I can also give a clean practical exam answer format (Aim, Tools Required, Procedure, Code, Result) which many DevOps lab manuals require.
